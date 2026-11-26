@@ -72,7 +72,7 @@ jobs:
   aur:
     # Bump the AUR package (pkgver + sha256) and push via the release key.
     # Requires the AUR_SSH_KEY secret (private key registered on AUR).
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: false  # fork build: no AUR/registry credentials here
     needs: build
     runs-on: ubuntu-latest
     container: archlinux:base-devel
@@ -143,7 +143,7 @@ jobs:
     # publish-new + publish-update scopes) — a missing token FAILS the job:
     # a silent skip once shipped a "released" version that never reached
     # the registry.
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: false  # fork build: no AUR/registry credentials here
     needs: build
     runs-on: ubuntu-latest
     steps:

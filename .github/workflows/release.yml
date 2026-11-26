@@ -136,7 +136,7 @@ jobs:
             install -Dm644 assets/app/shotori.svg "$pkgdir/usr/share/icons/hicolor/scalable/apps/shotori.svg"
           }
           PKGEOF
-          sed -i "s/__PKGVER__/${PKGVER}/; s/__TAG__/${TAG}/; s/__SHA__/${SHA}/; s/__PKGREL__/${PKGREL}/" PKGBUILD
+          sed -i "s/__PKGVER__/${PKGVER}/; s/__TAG__/${TAG}/; s/__SHA__/${SHA}/; s/__PKGREL__/${PKGREL}/; s/__TAG__/${TAG}/g" PKGBUILD
           useradd -m builder
           install -d -o builder -g builder /home/builder/work
           cp PKGBUILD /home/builder/work/

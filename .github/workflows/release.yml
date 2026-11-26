@@ -106,12 +106,15 @@ jobs:
           TAG="${GITHUB_REF_NAME}"
           PKGVER="${TAG#v}"
           PKGVER="${PKGVER%%-*}"
+          # tag suffix selects pkgrel so AUR clients see an upgrade
+          PKGREL="${GITHUB_REF_NAME##*-clipboard}"
+          case "$PKGREL" in ''|*[!0-9]*) PKGREL=1 ;; esac
           SHA=$(sha256sum "../artifact/shotori-${TAG}-x86_64.tar.gz" | cut -d' ' -f1)
           cat > PKGBUILD <<'PKGEOF'
           # Maintainer: guohw <go1em>
           pkgname=shotori-clipboard-uri-list
           pkgver=__PKGVER__
-          pkgrel=1
+          pkgrel=__PKGREL__
           pkgdesc="Screenshot tool fork: the clipboard also offers text/uri-list and text/html so X11 clients can paste large images"
           arch=('x86_64')
           url="https://github.com/go1em/shotori"
@@ -133,7 +136,7 @@ jobs:
             install -Dm644 assets/app/shotori.svg "$pkgdir/usr/share/icons/hicolor/scalable/apps/shotori.svg"
           }
           PKGEOF
-          sed -i "s/__PKGVER__/${PKGVER}/; s/__TAG__/${TAG}/; s/__SHA__/${SHA}/" PKGBUILD
+          sed -i "s/__PKGVER__/${PKGVER}/; s/__TAG__/${TAG}/; s/__SHA__/${SHA}/; s/__PKGREL__/${PKGREL}/" PKGBUILD
           useradd -m builder
           install -d -o builder -g builder /home/builder/work
           cp PKGBUILD /home/builder/work/
